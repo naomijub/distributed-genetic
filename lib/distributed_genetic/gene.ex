@@ -12,7 +12,7 @@ defmodule DistributedGenetic.Gene do
 
   def calculate_fitness(rna, lab) do
     {points, _} =
-      Enum.reduce(rna, {0, {0, 0}}, fn x, {point, pos} ->
+      Enum.reduce(rna, {0, find_entrance(lab)}, fn x, {point, pos} ->
         with next_pos <- move(x, pos),
              next_pos_point <- eval_position(next_pos, lab) do
           {next_pos_point + point, next_pos}
@@ -31,6 +31,24 @@ defmodule DistributedGenetic.Gene do
   def move("SE", {x, y}), do: {x + 1, y + 1}
   def move("SW", {x, y}), do: {x - 1, y + 1}
   def move(_direciton, _pos), do: {-10, -10}
+
+  def find_entrance(lab) do
+    width =
+      lab
+      |> List.first()
+      |> length
+
+    index =
+      lab
+      |> List.flatten()
+      |> Enum.find_index(fn x -> x == "E" end) || 0
+
+    if width > 0 do
+      {div(index, width), rem(index, width)}
+    else
+      {0, 0}
+    end
+  end
 
   defp eval_position({x, y}, lab) do
     with true <- x >= 0,

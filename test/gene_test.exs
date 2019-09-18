@@ -56,4 +56,24 @@ defmodule DistributedGenetic.GeneTest do
       assert Gene.calculate_fitness(rna, lab) == -1000 + 3
     end
   end
+
+  describe "Find Entrance" do
+    test "Gets the entrance coordinates" do
+      lab = [["0", "0", "1"], ["0", "0", "1"], ["E", "0", "1"]]
+
+      assert Gene.find_entrance(lab) == {2, 0}
+    end
+
+    test "Points to upper left corner when no entrance is found" do
+      lab = [["0", "1", "1"], ["S", "0", "1"], ["0", "0", "1"]]
+
+      assert Gene.find_entrance(lab) == {0, 0}
+    end
+
+    test "Points to upper left corner when lab is empty" do
+      lab = [[], []]
+
+      assert Gene.find_entrance(lab) == {0, 0}
+    end
+  end
 end
