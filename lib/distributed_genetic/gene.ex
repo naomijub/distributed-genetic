@@ -2,19 +2,21 @@ defmodule DistributedGenetic.Gene do
   defstruct [:rna, :fitness]
 
   @directions ["S", "N", "W", "E", "NE", "NW", "SE", "SW"]
+  @rna_size 4..12
 
   def generate_rna do
     :rand.seed(:exsplus, {101, 102, 103})
 
-    1..Enum.random(4..12) |> Enum.map(fn _ -> Enum.random(@directions) end)
+    1..Enum.random(@rna_size) |> Enum.map(fn _ -> Enum.random(@directions) end)
   end
 
   def calculate_fitness(rna, lab) do
     {points, _} =
       Enum.reduce(rna, {0, {0, 0}}, fn x, {point, pos} ->
-        next_pos = move(x, pos)
-        next_pos_point = eval_position(next_pos, lab)
-        {next_pos_point + point, next_pos}
+        with next_pos <- move(x, pos),
+             next_pos_point <- eval_position(next_pos, lab) do
+          {next_pos_point + point, next_pos}
+        end
       end)
 
     points
@@ -28,6 +30,7 @@ defmodule DistributedGenetic.Gene do
   def move("NW", {x, y}), do: {x - 1, y - 1}
   def move("SE", {x, y}), do: {x + 1, y + 1}
   def move("SW", {x, y}), do: {x - 1, y + 1}
+  def move(_direciton, _pos), do: {-10, -10}
 
   defp eval_position({x, y}, lab) do
     with true <- x >= 0,

@@ -48,5 +48,12 @@ defmodule DistributedGenetic.GeneTest do
 
       assert Gene.calculate_fitness(rna, lab) == -1000 + 2
     end
+
+    test "Gets a low score if direction is not valid" do
+      rna = ["E", "S", "W", "invalid"]
+      lab = [["E", "0", "1"], ["0", "0", "1"], ["0", "0", "1"]]
+
+      assert Gene.calculate_fitness(rna, lab) == -1000 + 3
+    end
   end
 end
