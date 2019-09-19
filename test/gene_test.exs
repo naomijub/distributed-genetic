@@ -39,21 +39,21 @@ defmodule DistributedGenetic.GeneTest do
       rna = ["E", "S", "W", "W"]
       lab = [["E", "0", "1"], ["0", "0", "1"], ["0", "0", "1"]]
 
-      assert Gene.calculate_fitness(rna, lab) == -1000 + 3
+      assert Gene.calculate_fitness(rna, lab) == -100 + 3
     end
 
     test "Gets a low score if hits a wall" do
       rna = ["E", "S", "E"]
       lab = [["E", "0", "1"], ["0", "0", "1"], ["0", "0", "1"]]
 
-      assert Gene.calculate_fitness(rna, lab) == -1000 + 2
+      assert Gene.calculate_fitness(rna, lab) == -100 + 2
     end
 
     test "Gets a low score if direction is not valid" do
       rna = ["E", "S", "W", "invalid"]
       lab = [["E", "0", "1"], ["0", "0", "1"], ["0", "0", "1"]]
 
-      assert Gene.calculate_fitness(rna, lab) == -1000 + 3
+      assert Gene.calculate_fitness(rna, lab) == -100 + 3
     end
   end
 
@@ -61,7 +61,7 @@ defmodule DistributedGenetic.GeneTest do
     test "Gets the entrance coordinates" do
       lab = [["0", "0", "1"], ["0", "0", "1"], ["E", "0", "1"]]
 
-      assert Gene.find_entrance(lab) == {2, 0}
+      assert Gene.find_entrance(lab) == {0, 2}
     end
 
     test "Points to upper left corner when no entrance is found" do

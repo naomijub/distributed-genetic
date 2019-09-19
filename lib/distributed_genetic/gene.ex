@@ -44,7 +44,7 @@ defmodule DistributedGenetic.Gene do
       |> Enum.find_index(fn x -> x == "E" end) || 0
 
     if width > 0 do
-      {div(index, width), rem(index, width)}
+      {rem(index, width), div(index, width)}
     else
       {0, 0}
     end
@@ -58,10 +58,10 @@ defmodule DistributedGenetic.Gene do
       case col do
         "0" -> 1
         "S" -> 10
-        _ -> -1000
+        _ -> -100
       end
     else
-      _ -> -1000
+      _ -> -100
     end
   end
 end
