@@ -1,6 +1,6 @@
 # DistributedGenetic
 
-**TODO: Add description**
+Pairing with [@barboza](https://github.com/barboza)
 
 ## Installation
 
