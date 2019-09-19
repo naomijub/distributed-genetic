@@ -1,5 +1,6 @@
 defmodule DistributedGenetic.GeneTest do
   use ExUnit.Case
+  import TestHelper
   alias DistributedGenetic.Gene
 
   @directions ["S", "N", "W", "E", "NE", "NW", "SE", "SW"]
@@ -25,35 +26,51 @@ defmodule DistributedGenetic.GeneTest do
       rna = ["E", "S", "W", "S", "E"]
       lab = [["E", "0", "1"], ["0", "0", "1"], ["0", "0", "1"]]
 
-      assert Gene.calculate_fitness(rna, lab) == 5
+      assert Gene.calculate_fitness(rna, lab) == 5 - size_penalty(length(rna))
     end
 
     test "Gets a bonus when exit is found" do
       rna = ["E", "S", "W"]
       lab = [["E", "0", "1"], ["S", "0", "1"], ["1", "1", "1"]]
 
-      assert Gene.calculate_fitness(rna, lab) == 12
+      assert Gene.calculate_fitness(rna, lab) == 102 - size_penalty(length(rna))
+    end
+
+    test "Gets points when moving diagonal" do
+      rna = ["SE", "W"]
+      lab = [["E", "0", "1"], ["S", "0", "1"], ["1", "1", "1"]]
+
+      assert Gene.calculate_fitness(rna, lab) == 101 - size_penalty(length(rna))
     end
 
     test "Gets a low score if hits the edge of the labyrinth" do
       rna = ["E", "S", "W", "W"]
       lab = [["E", "0", "1"], ["0", "0", "1"], ["0", "0", "1"]]
 
-      assert Gene.calculate_fitness(rna, lab) == -100 + 3
+      assert Gene.calculate_fitness(rna, lab) == -1000 + 3 - size_penalty(length(rna))
     end
 
-    test "Gets a low score if hits a wall" do
+    test "Gets a penalty if hits a wall" do
       rna = ["E", "S", "E"]
       lab = [["E", "0", "1"], ["0", "0", "1"], ["0", "0", "1"]]
 
-      assert Gene.calculate_fitness(rna, lab) == -100 + 2
+      assert Gene.calculate_fitness(rna, lab) == -10 + 2 - size_penalty(length(rna))
     end
 
     test "Gets a low score if direction is not valid" do
       rna = ["E", "S", "W", "invalid"]
       lab = [["E", "0", "1"], ["0", "0", "1"], ["0", "0", "1"]]
 
-      assert Gene.calculate_fitness(rna, lab) == -100 + 3
+      assert Gene.calculate_fitness(rna, lab) == -1000 + 3 - size_penalty(length(rna))
+    end
+
+    test "Smaller gene gets a higher score" do
+      smaller_rna = ["SE", "N", "S", "W"]
+      bigger_rna = ["SE", "N", "S", "N", "S", "N", "SW"]
+      lab = [["E", "0", "1"], ["S", "0", "1"], ["1", "1", "1"]]
+      IO.puts(Gene.calculate_fitness(smaller_rna, lab))
+      IO.puts(Gene.calculate_fitness(bigger_rna, lab))
+      assert Gene.calculate_fitness(smaller_rna, lab) > Gene.calculate_fitness(bigger_rna, lab)
     end
   end
 

@@ -19,7 +19,7 @@ defmodule DistributedGenetic.Gene do
         end
       end)
 
-    points
+    points - 6 * :math.tan(length(rna) / 6 + 5)
   end
 
   def move("S", {x, y}), do: {x, y + 1}
@@ -57,11 +57,12 @@ defmodule DistributedGenetic.Gene do
          {:ok, col} <- Enum.fetch(row, x) do
       case col do
         "0" -> 1
-        "S" -> 10
-        _ -> -100
+        "S" -> 100
+        "1" -> -10
+        _ -> -1000
       end
     else
-      _ -> -100
+      _ -> -1000
     end
   end
 end
