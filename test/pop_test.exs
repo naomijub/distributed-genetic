@@ -11,6 +11,16 @@ defmodule DistributedGenetic.PopTest do
     test "genes should be different" do
       pop = Population.generate_pop()
       assert pop |> Enum.uniq |> length == length(pop)
+    end
   end
+
+  describe "Get random genes" do
+    test "3 random genes are returned from pop" do
+      pop = Population.generate_pop()
+      selected_genes = Population.select_genes(pop)
+
+      assert length(selected_genes) == 3
+      assert selected_genes |> Enum.uniq |> length == length(selected_genes)
+    end
   end
 end
