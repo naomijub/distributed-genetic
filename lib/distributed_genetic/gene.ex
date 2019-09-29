@@ -5,7 +5,10 @@ defmodule DistributedGenetic.Gene do
   @rna_size 4..12
 
   def generate_rna do
-    :rand.seed(:exsplus, {101, 102, 103})
+    first = :os.system_time(:seconds)
+    second = :os.system_time(:micro_seconds)
+    third = :os.system_time(:milli_seconds)
+    :rand.seed(:exsplus, {first, second, third})
 
     1..Enum.random(@rna_size) |> Enum.map(fn _ -> Enum.random(@directions) end)
   end

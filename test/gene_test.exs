@@ -68,8 +68,6 @@ defmodule DistributedGenetic.GeneTest do
       smaller_rna = ["SE", "N", "S", "W"]
       bigger_rna = ["SE", "N", "S", "N", "S", "N", "SW"]
       lab = [["E", "0", "1"], ["S", "0", "1"], ["1", "1", "1"]]
-      IO.puts(Gene.calculate_fitness(smaller_rna, lab))
-      IO.puts(Gene.calculate_fitness(bigger_rna, lab))
       assert Gene.calculate_fitness(smaller_rna, lab) > Gene.calculate_fitness(bigger_rna, lab)
     end
   end
